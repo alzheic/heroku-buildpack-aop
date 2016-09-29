@@ -1,0 +1,26 @@
+#!/bin/bash
+# Build Path: /app/.heroku/php/
+dep_url=git://github.com/AOP-PHP/AOP.git
+aop_dir=AOP
+echo "-----> Building AOP..."
+
+### Phalcon
+echo "[LOG] Downloading AOP"
+git clone $dep_url -q
+if [ ! -d "$phalcon_dir" ]; then
+  echo "[ERROR] Failed to find AOP directory $aop_dir"
+  exit
+fi
+cd $aop_dir/build
+
+# /app/php/bin/phpize
+# ./configure --enable-aop --with-php-config=$PHP_ROOT/bin/php-config
+# make
+# make install
+BUILD_DIR=$1
+ln -s $BUILD_DIR/.heroku /app/.heroku
+export PATH=/app/.heroku/php/bin:$PATH
+bash ./install
+cd
+echo "important extension aop into php.ini"
+echo "extension=aop.so" >> /app/.heroku/php/etc/php/php.ini
