@@ -27,8 +27,8 @@ cd $aop_dir
 # cd $runkit_dir
 
 phpize
-./configure
-make test
+# ./configure
+# make test
 # make
 
 # make install
