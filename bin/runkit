@@ -1,0 +1,29 @@
+#!/bin/bash
+# Build Path: /app/.heroku/php/
+dep_url=git://github.com/zenovich/runkit.git
+runkit_dir=runkit
+echo "-----> Building runkit..."
+
+# ### Runkit
+echo "[LOG] Downloading runkit"
+git clone $dep_url
+if [ ! -d "$runkit_dir" ]; then
+  echo "[ERROR] Failed to find runkit directory $runkit_dir"
+  exit
+fi
+cd $runkit_dir
+
+phpize
+./configure
+make
+make test
+
+make install
+# BUILD_DIR=$1
+# ln -s $BUILD_DIR/.heroku /app/.heroku
+# export PATH=/app/.heroku/php/bin:$PATH
+# bash ./install
+# cd
+echo "important extension runkit into php.ini"
+echo "extension=runkit.so" >> /app/.heroku/php/etc/php/php.ini
+echo "runkit.internal_override = 1" >> /app/.heroku/php/etc/php/php.ini
